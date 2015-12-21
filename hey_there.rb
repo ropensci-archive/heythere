@@ -39,9 +39,9 @@ def hey_there(repo, days_since_last = -1)
             mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
               revs.join(' '), days_since(rev_assgn))
             ### add the comment
-            puts x['number']
+            puts x['number'].to_s
             ff = Octokit.add_comment(repo, x['number'], mssg)
-            puts ff.length
+            puts 'sent off ' + ff.length.to_s + 'comments'
           end
         else
           # review in, awaiting changes => ping if been more than days_wait
