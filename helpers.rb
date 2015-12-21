@@ -20,5 +20,5 @@ class Hash
 end
 
 def days_since(x)
-  return (Date.parse(Time.now.getutc.to_s) - Date.parse(rev_assgn.to_s)).to_f
+  return (Date.parse(Time.now.getutc.to_s) - Date.parse(x.to_s)).to_f
 end

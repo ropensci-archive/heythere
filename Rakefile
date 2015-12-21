@@ -10,7 +10,7 @@ task :hey do
   end
 
   begin
-    hey_there('sckott/testhey')
+    hey_there(repo = 'sckott/testhey')
   rescue
     next
   end
