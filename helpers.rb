@@ -15,6 +15,10 @@ class Hash
     vars = [:url, :number, :title]
     tmp = self.select { |k,_| vars.include?(k) }
     tmp[:user] = self[:user][:login]
-    tmp
+    return tmp
   end
+end
+
+def days_since(x)
+  return (Date.parse(Time.now.getutc.to_s) - Date.parse(rev_assgn.to_s)).to_f
 end

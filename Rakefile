@@ -10,7 +10,7 @@ task :hey do
   end
 
   begin
-    hey_there('ropensci/onboarding')
+    hey_there('sckott/testhey')
   rescue
     next
   end
