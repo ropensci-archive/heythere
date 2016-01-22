@@ -11,6 +11,38 @@ git clone git@github.com:ropenscilabs/heythere.git
 cd heythere
 ```
 
+Setup
+=====
+
+Create the app (use a different name, of course)
+
+```
+heroku apps:create ropensci-hey-there
+```
+
+Create a GitHub personal access token just for this application. You'll need to set a env var for your username and the token. We read these in the app.
+
+```
+heroku config:add GITHUB_USERNAME=<github-user>
+heroku config:add GITHUB_PAT_OCTOKIT=<github-pat>
+```
+
+Push your app to Heroku
+
+```
+git push heroku master
+```
+
+Add the scheduler to your heroku app
+
+```
+heroku addons:create scheduler:standard
+heroku addons:open scheduler
+```
+
+Add the task ```rake hey``` to your heroku scheduler and set to whatever schedule you want.
+
+
 Usage
 =====
 
