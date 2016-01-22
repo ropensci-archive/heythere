@@ -1,7 +1,7 @@
 require 'date'
 require_relative 'helpers'
 
-def hey_there(repo, days_since_last = -1)
+def hey_there(repo, days_since_last = 21)
   puts 'using repo ' + repo
   is = Octokit.issues repo, :per_page => 100
   puts is.length.to_s + ' issues found'
@@ -9,7 +9,7 @@ def hey_there(repo, days_since_last = -1)
     raise 'no issues found'
   else
     # remove issues that aren't packages
-    # is = is.only_packages
+    is = is.only_packages
 
     # for each issue, run through labels and days since events
     is.each do |x|

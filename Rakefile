@@ -10,7 +10,7 @@ task :hey do
   end
 
   begin
-    hey_there(repo = 'sckott/testhey')
+    hey_there(repo = 'ropensci/onboarding')
   rescue
     next
   end
@@ -21,3 +21,5 @@ end
 #   puts "Restarting build for: #{args[:repo]}"
 #   hey_there_local(args[:repo])
 # end
+
+#hey_there(repo = 'sckott/testhey')
