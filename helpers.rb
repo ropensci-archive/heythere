@@ -6,7 +6,8 @@ end
 
 class Array
   def only_packages
-    self.select { |x| x['labels'].map(&:name).has?('package') }
+    # self.select { |x| x['labels'].map(&:name).has?(ENV['HEYTHERE_LABEL_TARGET']) }
+    self.select { |x| x['labels'].map(&:name).has?(Heythere.label_target) }
   end
 end
 

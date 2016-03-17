@@ -10,10 +10,20 @@ task :hey do
   end
 
   begin
-    hey_there(repo = 'ropensci/onboarding')
+    Heythere.hey_there(repo = 'ropensci/onboarding')
   rescue
     next
   end
+end
+
+desc "list env vars"
+task :envs do
+  puts 'label target:        ' + Heythere.label_target
+  puts 'label assigned:      ' + Heythere.label_assigned
+  puts 'label review in:     ' + Heythere.label_review_in
+  puts 'pre deadline days:   ' + Heythere.pre_deadline_days
+  puts 'deadline days:       ' + Heythere.deadline_days
+  puts 'deadline every days: ' + Heythere.post_deadline_every_days
 end
 
 # desc "hey - but local"
