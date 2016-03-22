@@ -32,6 +32,8 @@ heroku config:add GITHUB_PAT_OCTOKIT=<github-pat-for-octokit>
 heroku config:add HEYTHERE_PRE_DEADLINE_DAYS=<number-of-days-integer>
 heroku config:add HEYTHERE_DEADLINE_DAYS=<number-of-days-integer>
 heroku config:add HEYTHERE_POST_DEADLINE_EVERY_DAYS=<number-of-days-integer>
+heroku config:add HEYTHERE_POST_REVIEW_IN_DAYS=<number-of-days-integer>
+heroku config:add HEYTHERE_POST_REVIEW_TOGGLE=<boolean>
 ```
 
 Push your app to Heroku
@@ -90,6 +92,8 @@ Non-secret env vars with what we use in parens, then explanation. The values in 
 * `HEYTHERE_PRE_DEADLINE_DAYS` - (`15`)
 * `HEYTHERE_DEADLINE_DAYS` - (`21`)
 * `HEYTHERE_POST_DEADLINE_EVERY_DAYS` - (`4`)
+* `HEYTHERE_POST_REVIEW_IN_DAYS` - (`14`)
+* `HEYTHERE_POST_REVIEW_TOGGLE` - (`true`)
 * `HEYTHERE_LABEL_TARGET` - (`package`) - which issues to consider (others are ignored)
 * `HEYTHERE_LABEL_ASSIGNED` - (`editor-assigned`) - if assigned, then proceed with algorithm...
 * `HEYTHERE_LABEL_REVIEW_IN` - (`review-in-awaiting-changes`) - if reviews not in, may need to ping reviewers, if reviews in, may or may not want to ping submitter to remind them

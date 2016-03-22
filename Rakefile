@@ -24,6 +24,8 @@ task :envs do
   puts 'pre deadline days:   ' + Heythere.pre_deadline_days
   puts 'deadline days:       ' + Heythere.deadline_days
   puts 'deadline every days: ' + Heythere.post_deadline_every_days
+  puts 'remind after review days: ' + Heythere.post_review_in_days
+  puts 'remind after review (toggle): ' + Heythere.post_review_toggle
 end
 
 # desc "hey - but local"

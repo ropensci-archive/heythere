@@ -21,5 +21,15 @@ class Hash
 end
 
 def days_since(x)
-  return (Date.parse(Time.now.getutc.to_s) - Date.parse(x.to_s)).to_f
+  return (Date.parse(Time.now.getutc.to_s) - Date.parse(x.to_s)).to_f.floor
+end
+
+def days_plus_day(x)
+  return Date.parse((Time.now + x.days).to_s).strftime("%b %d")
+end
+
+class Fixnum
+  def days
+    self * 86400
+  end
 end
