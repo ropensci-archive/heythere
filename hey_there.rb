@@ -60,28 +60,39 @@ module Heythere
                   if revs.nil?
                     puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
                   else
-                    ## mention reviewers with message
-                    mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat:",
-                      revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)))
-                    ### add the comment
-                    ff = Octokit.add_comment(repo, x['number'], mssg)
-                    puts 'sent off ' + ff.length.to_s + 'comments'
+                    ## check if reminders already sent, if so, skip, if not, send message
+                    if already_pinged(iscomm, 'days, please get your review in by')
+                      puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
+                    else
+                      ## mention reviewers with message
+                      mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat:",
+                        revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)))
+                      ### add the comment
+                      ff = Octokit.add_comment(repo, x['number'], mssg)
+                      puts 'sent off ' + ff.length.to_s + 'comments'
+                    end
                   end
                 else
                   puts sprintf('%s issue %s %s', repo, x['number'], 'is less than half way, skipping')
                 end
               else
+                # post deadline for reviews in, just a reminder to get review in soon...
                 ## get reviewer handles
                 revs = revs_not_reviewed(iscomm, tmp)
                 if revs.nil?
                   puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
                 else
-                  ## mention reviewers with message
-                  mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
-                    revs.join(' '), days_since(rev_assgn))
-                  ### add the comment
-                  ff = Octokit.add_comment(repo, x['number'], mssg)
-                  puts 'sent off ' + ff.length.to_s + 'comments'
+                  ## check if reminders already sent, if so, skip, if not, send message
+                  if already_pinged(iscomm, 'days, please get your review in soon')
+                    puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
+                  else
+                    ## mention reviewers with message
+                    mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
+                      revs.join(' '), days_since(rev_assgn))
+                    ### add the comment
+                    ff = Octokit.add_comment(repo, x['number'], mssg)
+                    puts 'sent off ' + ff.length.to_s + 'comments'
+                  end
                 end
               end
             else

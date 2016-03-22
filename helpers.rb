@@ -51,3 +51,12 @@ def revs_not_reviewed(x, y)
     return revsret
   end
 end
+
+def already_pinged(x, mssg)
+  res = x.map(&:body).select { |w| w.match(/#{mssg}/) }
+  return res.length != 0
+end
+
+
+
+
