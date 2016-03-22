@@ -10,7 +10,7 @@ task :hey do
   end
 
   begin
-    Heythere.hey_there(repo = 'sckott/testhey')
+    Heythere.hey_there(repo = 'ropensci/onboarding')
   rescue
     next
   end
@@ -18,6 +18,7 @@ end
 
 desc "list env vars"
 task :envs do
+  puts 'bot nickname:        ' + Heythere.bot_nickname
   puts 'label target:        ' + Heythere.label_target
   puts 'label assigned:      ' + Heythere.label_assigned
   puts 'label review in:     ' + Heythere.label_review_in
@@ -25,7 +26,7 @@ task :envs do
   puts 'deadline days:       ' + Heythere.deadline_days
   puts 'deadline every days: ' + Heythere.post_deadline_every_days
   puts 'remind after review days: ' + Heythere.post_review_in_days
-  puts 'remind after review (toggle): ' + Heythere.post_review_toggle
+  puts 'remind after review (toggle): ' + Heythere.post_review_toggle.to_s
 end
 
 # desc "hey - but local"

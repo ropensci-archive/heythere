@@ -6,6 +6,7 @@ require_relative 'configuration'
 module Heythere
   extend Configuration
 
+  define_setting :bot_nickname, ENV['HEYTHERE_BOT_NICKNAME'] || ''
   define_setting :pre_deadline_days, ENV['HEYTHERE_PRE_DEADLINE_DAYS'] || '15'
   define_setting :deadline_days, ENV['HEYTHERE_DEADLINE_DAYS'] || '21'
   define_setting :post_deadline_every_days, ENV['HEYTHERE_POST_DEADLINE_EVERY_DAYS'] || '4'
@@ -16,6 +17,10 @@ module Heythere
   define_setting :label_review_in, ENV['HEYTHERE_LABEL_REVIEW_IN'] || 'review-in-awaiting-changes'
 
   def self.hey_there(repo)
+    if Heythere.bot_nickname.length != 0
+      bot_name = sprintf("(%s)", Heythere.bot_nickname)
+    end
+
     puts 'using repo ' + repo
     begin
       is = Octokit.issues repo, :per_page => 100
@@ -65,8 +70,8 @@ module Heythere
                       puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
                     else
                       ## mention reviewers with message
-                      mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat:",
-                        revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)))
+                      mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat: %s",
+                        revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)), bot_name)
                       ### add the comment
                       ff = Octokit.add_comment(repo, x['number'], mssg)
                       puts 'sent off ' + ff.length.to_s + 'comments'
@@ -87,8 +92,8 @@ module Heythere
                     puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
                   else
                     ## mention reviewers with message
-                    mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
-                      revs.join(' '), days_since(rev_assgn))
+                    mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat: %s",
+                      revs.join(' '), days_since(rev_assgn), bot_name)
                     ### add the comment
                     ff = Octokit.add_comment(repo, x['number'], mssg)
                     puts 'sent off ' + ff.length.to_s + 'comments'
@@ -112,7 +117,7 @@ module Heythere
                     ## get submitter handle
                     submitter = '@' + x[:user][:login]
                     ## construct message
-                    mssg = sprintf("%s - hey there, it's been %s days since reviews were submitted - anything we can do to help? :smiley_cat:", submitter, days_since(date_review_in))
+                    mssg = sprintf("%s - hey there, it's been %s days since reviews were submitted - anything we can do to help? :smiley_cat: %s", submitter, days_since(date_review_in), bot_name)
                     ## send message
                     puts sprintf('sent off a comment to ask if theres anything we can do to help')
                   else
