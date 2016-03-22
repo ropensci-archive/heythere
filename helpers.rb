@@ -33,3 +33,21 @@ class Fixnum
     self * 86400
   end
 end
+
+def revs_not_reviewed(x, y)
+  revsret = y[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
+  revs = y[0][:body].sub(/Reviewers:/, '').sub(',', '').strip.gsub('@', '').sub(' ', '|')
+  comms = x.select { |z| z[:user][:login].match(/#{revs}/) }
+  longcomms = comms.select { |y| y[:body].length > 3000 }
+  lclogins = longcomms.map(&:user).map(&:login)
+  if lclogins.length > 0
+    left = revs.gsub(/#{lclogins.join('|')}|\|/, '')
+    if left.length == 0
+      return nil
+    else
+      return ['@' + left]
+    end
+  else
+    return revsret
+  end
+end

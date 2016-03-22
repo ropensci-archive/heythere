@@ -53,25 +53,36 @@ module Heythere
                 puts sprintf('%s issue %s %s', repo, x['number'], 'is within day limit, checking for predeadline ping')
                 if days_since(rev_assgn) > Heythere.pre_deadline_days.to_i
                   ## get reviewer handles
-                  revs = tmp[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
-                  ## mention reviewers with message
-                  mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat:",
-                    revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)))
-                  ### add the comment
-                  ff = Octokit.add_comment(repo, x['number'], mssg)
-                  puts 'sent off ' + ff.length.to_s + 'comments'
+                  ### get only reviewer handles that haven't submitted a review
+                  #### gonna be messy because we don't have syntax in comment bodies that it is in fact a review
+                  #### and not e.g., a question
+                  revs = revs_not_reviewed(iscomm, tmp)
+                  if revs.nil?
+                    puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
+                  else
+                    ## mention reviewers with message
+                    mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat:",
+                      revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)))
+                    ### add the comment
+                    ff = Octokit.add_comment(repo, x['number'], mssg)
+                    puts 'sent off ' + ff.length.to_s + 'comments'
+                  end
                 else
                   puts sprintf('%s issue %s %s', repo, x['number'], 'is less than half way, skipping')
                 end
               else
                 ## get reviewer handles
-                revs = tmp[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
-                ## mention reviewers with message
-                mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
-                  revs.join(' '), days_since(rev_assgn))
-                ### add the comment
-                ff = Octokit.add_comment(repo, x['number'], mssg)
-                puts 'sent off ' + ff.length.to_s + 'comments'
+                revs = revs_not_reviewed(iscomm, tmp)
+                if revs.nil?
+                  puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
+                else
+                  ## mention reviewers with message
+                  mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat:",
+                    revs.join(' '), days_since(rev_assgn))
+                  ### add the comment
+                  ff = Octokit.add_comment(repo, x['number'], mssg)
+                  puts 'sent off ' + ff.length.to_s + 'comments'
+                end
               end
             else
               # review in, check whether user wants to skip the post review notification

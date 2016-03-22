@@ -10,7 +10,7 @@ task :hey do
   end
 
   begin
-    Heythere.hey_there(repo = 'ropensci/onboarding')
+    Heythere.hey_there(repo = 'sckott/testhey')
   rescue
     next
   end
