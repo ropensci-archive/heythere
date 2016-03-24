@@ -6,6 +6,7 @@ require_relative 'configuration'
 module Heythere
   extend Configuration
 
+  define_setting :repository, ENV['HEYTHERE_REPOSITORY']
   define_setting :bot_nickname, ENV['HEYTHERE_BOT_NICKNAME'] || ''
   define_setting :pre_deadline_days, ENV['HEYTHERE_PRE_DEADLINE_DAYS'] || '15'
   define_setting :deadline_days, ENV['HEYTHERE_DEADLINE_DAYS'] || '21'

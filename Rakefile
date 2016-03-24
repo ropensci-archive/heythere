@@ -9,8 +9,16 @@ task :hey do
     c.password = ENV['GITHUB_PAT_OCTOKIT']
   end
 
+  # check for repository input
+  if ENV["repo"].class == String
+    repo = ENV["repo"]
+  else
+    repo = Heythere.repository
+  end
+
+  # run hey_there
   begin
-    Heythere.hey_there(repo = 'ropensci/onboarding')
+    Heythere.hey_there(repo = repo)
   rescue
     next
   end
@@ -18,21 +26,14 @@ end
 
 desc "list env vars"
 task :envs do
-  puts 'bot nickname:        ' + Heythere.bot_nickname
-  puts 'label target:        ' + Heythere.label_target
-  puts 'label assigned:      ' + Heythere.label_assigned
-  puts 'label review in:     ' + Heythere.label_review_in
-  puts 'pre deadline days:   ' + Heythere.pre_deadline_days
-  puts 'deadline days:       ' + Heythere.deadline_days
+  puts 'repository: ' + Heythere.repository
+  puts 'bot nickname: ' + Heythere.bot_nickname
+  puts 'label target: ' + Heythere.label_target
+  puts 'label assigned: ' + Heythere.label_assigned
+  puts 'label review in: ' + Heythere.label_review_in
+  puts 'pre deadline days: ' + Heythere.pre_deadline_days
+  puts 'deadline days: ' + Heythere.deadline_days
   puts 'deadline every days: ' + Heythere.post_deadline_every_days
   puts 'remind after review days: ' + Heythere.post_review_in_days
   puts 'remind after review (toggle): ' + Heythere.post_review_toggle.to_s
 end
-
-# desc "hey - but local"
-# task :hi, [:repo] do |t, args|
-#   puts "Restarting build for: #{args[:repo]}"
-#   hey_there_local(args[:repo])
-# end
-
-#hey_there(repo = 'sckott/testhey')
