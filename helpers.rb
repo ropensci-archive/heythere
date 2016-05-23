@@ -52,11 +52,8 @@ def revs_not_reviewed(x, y)
   end
 end
 
-def already_pinged(x, mssg)
+def already_pinged_within_days(x, days, mssg)
+  x = x.select { |w| ( Date.parse(Time.now.getutc.to_s) - Date.parse(w['created_at'].to_s) ) <= days.to_i }
   res = x.map(&:body).select { |w| w.match(/#{mssg}/) }
   return res.length != 0
 end
-
-
-
-

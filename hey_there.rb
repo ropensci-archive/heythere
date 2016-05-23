@@ -89,7 +89,7 @@ module Heythere
                   puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
                 else
                   ## check if reminders already sent, if so, skip, if not, send message
-                  if already_pinged(iscomm, 'days, please get your review in soon')
+                  if already_pinged_within_days(iscomm, Heythere.post_deadline_every_days, 'days, please get your review in soon')
                     puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
                   else
                     ## mention reviewers with message
