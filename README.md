@@ -104,7 +104,7 @@ Non-secret env vars with what we use in parens, then explanation. The values in 
 * `HEYTHERE_DEADLINE_DAYS` - (`21`)
 * `HEYTHERE_POST_DEADLINE_EVERY_DAYS` - (`4`)
 * `HEYTHERE_POST_REVIEW_IN_DAYS` - (`14`)
-* `HEYTHERE_POST_REVIEW_TOGGLE` - (`true`)
+* `HEYTHERE_POST_REVIEW_TOGGLE` - (`false`) - i.e., don't do pings to authors after reviews submitted
 * `HEYTHERE_LABEL_TARGET` - (`package`) - which issues to consider (others are ignored)
 * `HEYTHERE_LABEL_ASSIGNED` - (`editor-assigned`) - if assigned, then proceed with algorithm...
 * `HEYTHERE_LABEL_REVIEW_IN` - (`review-in-awaiting-changes`) - if reviews not in, may need to ping reviewers, if reviews in, may or may not want to ping submitter to remind them

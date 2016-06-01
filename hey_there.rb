@@ -12,7 +12,7 @@ module Heythere
   define_setting :deadline_days, ENV['HEYTHERE_DEADLINE_DAYS'] || '21'
   define_setting :post_deadline_every_days, ENV['HEYTHERE_POST_DEADLINE_EVERY_DAYS'] || '4'
   define_setting :post_review_in_days, ENV['HEYTHERE_POST_REVIEW_IN_DAYS'] || '14'
-  define_setting :post_review_toggle, ENV['HEYTHERE_POST_REVIEW_TOGGLE'] || true
+  define_setting :post_review_toggle, ENV['HEYTHERE_POST_REVIEW_TOGGLE'] || false
   define_setting :label_target, ENV['HEYTHERE_LABEL_TARGET'] || 'package'
   define_setting :label_assigned, ENV['HEYTHERE_LABEL_ASSIGNED'] || 'editor-assigned'
   define_setting :label_review_in, ENV['HEYTHERE_LABEL_REVIEW_IN'] || 'review-in-awaiting-changes'
@@ -103,7 +103,7 @@ module Heythere
               end
             else
               # review in, check whether user wants to skip the post review notification
-              if Heythere.post_review_toggle
+              if !Heythere.post_review_toggle
                 puts sprintf('%s issue %s - chose to skip post review notification', repo, x['number'])
               else
                 # review in, awaiting changes => ping if been more than x days
