@@ -14,8 +14,8 @@ module Heythere
   define_setting :post_review_in_days, ENV['HEYTHERE_POST_REVIEW_IN_DAYS'] || '14'
   define_setting :post_review_toggle, ENV['HEYTHERE_POST_REVIEW_TOGGLE'] || false
   define_setting :label_target, ENV['HEYTHERE_LABEL_TARGET'] || 'package'
-  define_setting :label_assigned, ENV['HEYTHERE_LABEL_ASSIGNED'] || 'editor-assigned'
-  define_setting :label_review_in, ENV['HEYTHERE_LABEL_REVIEW_IN'] || 'review-in-awaiting-changes'
+  define_setting :label_assigned, ENV['HEYTHERE_LABEL_ASSIGNED'] || '3/reviewers-assigned'
+  define_setting :label_review_in, ENV['HEYTHERE_LABEL_REVIEW_IN'] || '4/review-in-awaiting-changes'
 
   def self.hey_there(repo)
     if Heythere.bot_nickname.length != 0

@@ -106,8 +106,8 @@ Non-secret env vars with what we use in parens, then explanation. The values in 
 * `HEYTHERE_POST_REVIEW_IN_DAYS` - (`14`)
 * `HEYTHERE_POST_REVIEW_TOGGLE` - (`false`) - i.e., don't do pings to authors after reviews submitted
 * `HEYTHERE_LABEL_TARGET` - (`package`) - which issues to consider (others are ignored)
-* `HEYTHERE_LABEL_ASSIGNED` - (`editor-assigned`) - if assigned, then proceed with algorithm...
-* `HEYTHERE_LABEL_REVIEW_IN` - (`review-in-awaiting-changes`) - if reviews not in, may need to ping reviewers, if reviews in, may or may not want to ping submitter to remind them
+* `HEYTHERE_LABEL_ASSIGNED` - (`3/reviewers-assigned`) - if assigned, then proceed with algorithm...
+* `HEYTHERE_LABEL_REVIEW_IN` - (`4/review-in-awaiting-changes`) - if reviews not in, may need to ping reviewers, if reviews in, may or may not want to ping submitter to remind them
 * `HEYTHERE_BOT_NICKNAME` - no default - bot nickname
 
 Rake tasks
