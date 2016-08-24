@@ -11,6 +11,28 @@ class Array
   end
 end
 
+class Array
+  def revs_assigned
+    x = self.select{ |x| !!x.match(/[0-9]/) }
+    if x.length > 0
+      x.collect { |x| x.split('/')[0].to_i >= 3 }.any?
+    else
+      return false
+    end
+  end
+end
+
+class Array
+  def rev_in
+    x = self.select{ |x| !!x.match(/[0-9]/) }
+    if x.length > 0
+      x.collect { |x| x.split('/')[0].to_i >= 4 }.any?
+    else
+      return false
+    end
+  end
+end
+
 class Hash
   def get_info
     vars = [:url, :number, :title]
@@ -35,8 +57,11 @@ class Fixnum
 end
 
 def revs_not_reviewed(x, y)
-  revsret = y[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
-  revs = y[0][:body].sub(/Reviewers:/, '').sub(',', '').strip.gsub('@', '').sub(' ', '|')
+  #revsret = y[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
+  revsret = y[0][:body].match(/Reviewers:/).post_match
+  #revs = y[0][:body].sub(/Reviewers:/, '').sub(',', '').strip.gsub('@', '').sub(' ', '|')
+  revs = revsret.sub(',', '').strip.gsub('@', '').sub(' ', '|')
+  revs = revs.sub(/\n.+|\r.+/, '').sub(/\s/, '').sub(/\r/, '')
   comms = x.select { |z| z[:user][:login].match(/#{revs}/) }
   longcomms = comms.select { |y| y[:body].length > 1300 }
   lclogins = longcomms.map(&:user).map(&:login)

@@ -44,8 +44,10 @@ module Heythere
         if tags.has?('holding')
           puts sprintf('%s issue %s %s', repo, x['number'], 'on hold, skipping')
         else
-          if tags.has?(Heythere.label_assigned)
-            if !tags.has?(Heythere.label_review_in)
+          #if tags.has?(Heythere.label_assigned)
+          if tags.revs_assigned
+            #if !tags.has?(Heythere.label_review_in)
+            if tags.rev_in
               puts sprintf('%s issue %s %s', repo, x['number'], 'editor-assigned and no reviews in, checking days since')
               # if editor-assigned and no reviews in, ping reviewers
               ## get issue comments
@@ -71,8 +73,13 @@ module Heythere
                       puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
                     else
                       ## mention reviewers with message
-                      mssg = sprintf("%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat: %s",
-                        revs.join(' '), days_since(rev_assgn), days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)), bot_name)
+                      mssg = sprintf(
+                        "%s - hey there, it's been %s days, please get your review in by %s, thanks :smiley_cat: %s",
+                        revs.join(' '),
+                        days_since(rev_assgn),
+                        days_plus_day(Heythere.deadline_days.to_i - days_since(rev_assgn)),
+                        bot_name
+                      )
                       ### add the comment
                       ff = Octokit.add_comment(repo, x['number'], mssg)
                       puts 'sent off ' + ff.length.to_s + 'comments'
@@ -109,7 +116,9 @@ module Heythere
                 # review in, awaiting changes => ping if been more than x days
                 ## find out when the label was added
                 isevents = Octokit.issue_events(repo, x['number'])
-                date_review_in = isevents.select { |x| x[:event].match('labeled') }.select { |z| z[:label][:name].match(Heythere.label_review_in) }.map(&:created_at)[0]
+                date_review_in = isevents.select { |x|
+                  x[:event].match('labeled') }.select { |z| z[:label][:name].match(Heythere.label_review_in)
+                }.map(&:created_at)[0]
                 if days_since(date_review_in) > Heythere.post_review_in_days.to_i
                   ## check first if any comments already submitted, if so skip
                   iscomm = Octokit.issue_comments(repo, x['number'])
@@ -118,14 +127,24 @@ module Heythere
                     ## get submitter handle
                     submitter = '@' + x[:user][:login]
                     ## construct message
-                    mssg = sprintf("%s - hey there, it's been %s days since reviews were submitted - anything we can do to help? :smiley_cat: %s", submitter, days_since(date_review_in), bot_name)
+                    mssg = sprintf(
+                      "%s - hey there, it's been %s days since reviews were submitted - anything we can do to help? :smiley_cat: %s",
+                      submitter,
+                      days_since(date_review_in),
+                      bot_name
+                    )
                     ## send message
                     puts sprintf('sent off a comment to ask if theres anything we can do to help')
                   else
                     puts sprintf("%s issue %s %s reviews in, but we've already reminded the submitter")
                   end
                 else
-                  puts sprintf('%s issue %s %s reviews in, but less than %s, skipping', repo, x['number'], Heythere.post_review_in_days.to_i)
+                  puts sprintf(
+                    '%s issue %s %s reviews in, but less than %s, skipping',
+                    repo,
+                    x['number'],
+                    Heythere.post_review_in_days.to_i
+                  )
                 end
               end
             end
