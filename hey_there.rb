@@ -3,6 +3,9 @@ require 'octokit'
 require_relative 'helpers'
 require_relative 'configuration'
 
+# auto-paginate Octokit calls
+Octokit.auto_paginate = true
+
 module Heythere
   extend Configuration
 
@@ -47,7 +50,7 @@ module Heythere
           #if tags.has?(Heythere.label_assigned)
           if tags.revs_assigned
             #if !tags.has?(Heythere.label_review_in)
-            if tags.rev_in
+            if !tags.rev_in
               puts sprintf('%s issue %s %s', repo, x['number'], 'editor-assigned and no reviews in, checking days since')
               # if editor-assigned and no reviews in, ping reviewers
               ## get issue comments
@@ -69,7 +72,7 @@ module Heythere
                     puts sprintf('%s issue %s - all reviewers appear to have submitted reviews, skipping', repo, x['number'])
                   else
                     ## check if reminders already sent, if so, skip, if not, send message
-                    if already_pinged(iscomm, 'days, please get your review in by')
+                    if already_pinged_within_days(iscomm, Heythere.pre_deadline_days, 'days, please get your review in by')
                       puts sprintf('%s issue %s - already pinged reviewers recently, skipping', repo, x['number'])
                     else
                       ## mention reviewers with message
@@ -117,12 +120,12 @@ module Heythere
                 ## find out when the label was added
                 isevents = Octokit.issue_events(repo, x['number'])
                 date_review_in = isevents.select { |x|
-                  x[:event].match('labeled') }.select { |z| z[:label][:name].match(Heythere.label_review_in)
+                  x[:event].match('labeled') }.select { |z| z[:label][:name].match([Heythere.label_review_in,'review-in-awaiting-changes'].join('|'))
                 }.map(&:created_at)[0]
                 if days_since(date_review_in) > Heythere.post_review_in_days.to_i
                   ## check first if any comments already submitted, if so skip
                   iscomm = Octokit.issue_comments(repo, x['number'])
-                  if iscomm.map(&:body).select { |z| z.match('anything we can do to help') }.length == 0
+                  if iscomm.map(&:body).select { |z| z.match(/anything we can/im) }.length == 0
                     ## mention submitter with message
                     ## get submitter handle
                     submitter = '@' + x[:user][:login]
