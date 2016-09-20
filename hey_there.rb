@@ -104,7 +104,7 @@ module Heythere
                   else
                     ## mention reviewers with message
                     mssg = sprintf("%s - hey there, it's been %s days, please get your review in soon, thanks :smiley_cat: %s",
-                      revs.join(' '), days_since(rev_assgn), bot_name)
+                      revs.join(' '), days_since(rev_assgn).to_s, bot_name)
                     ### add the comment
                     ff = Octokit.add_comment(repo, x['number'], mssg)
                     puts 'sent off ' + ff.length.to_s + 'comments'

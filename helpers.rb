@@ -57,9 +57,9 @@ class Fixnum
 end
 
 def revs_not_reviewed(x, y)
-  #revsret = y[0][:body].sub(/Reviewers:/, '').split(/,/).map(&:strip)
   revsret = y[0][:body].match(/Reviewers:/).post_match
-  #revs = y[0][:body].sub(/Reviewers:/, '').sub(',', '').strip.gsub('@', '').sub(' ', '|')
+  # clean out due date, if exists
+  revsret = revsret.sub(/due.+/im, '')
   revs = revsret.sub(',', '').strip.gsub('@', '').sub(' ', '|')
   revs = revs.sub(/\n.+|\r.+/, '').sub(/\s/, '').sub(/\r/, '')
   comms = x.select { |z| z[:user][:login].match(/#{revs}/) }
@@ -73,7 +73,7 @@ def revs_not_reviewed(x, y)
       return ['@' + left]
     end
   else
-    return revsret
+    return revsret.sub(',', '').strip.split(/[\s]/)
   end
 end
 
