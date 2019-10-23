@@ -1,6 +1,8 @@
 heythere
 ========
 
+NOT USED RIGHT NOW
+
 Heroku robot to ping issues with reminders.
 
 This works by using specific keywords in issues.
